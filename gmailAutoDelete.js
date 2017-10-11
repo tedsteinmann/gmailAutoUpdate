@@ -43,9 +43,8 @@ function _gmailAutoDelete(labelName, minimumAgeInDays) {
       })
       Logger.log('Found %s threads to delete', toDelete.length);
       GmailApp.moveThreadsToTrash(toDelete)
-      
-      start += batchSize - toDelete.length;
-      
+      // Prepare for next batch
+      start += batchSize - toDelete.length; 
     }
   }
 }

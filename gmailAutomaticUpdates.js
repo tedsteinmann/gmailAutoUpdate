@@ -15,6 +15,16 @@ function automaticGmailUpdates() {
 // https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc
 // https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
 function _automaticGmailUpdates(labelName, minimumAgeInDays) {
+
+  // if an instance of "auto/delete" is found in the label name, set flag to delete it.
+  if (labelName.indexOf("auto/delete")>=0) {
+    var update = 'delete';
+  }
+  //otherwise, if instance of "auto/archive" is found, set flag to archive it
+  else if (labelName.indexOf("auto/archive")>=0) {
+    var update = 'archive'
+  }
+
   Logger.log('Running automatic updates for label %s (minimum age in days: %s)', labelName, minimumAgeInDays);
 
   // Threshold for latest message of the thread.
@@ -25,34 +35,46 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
   // Get all the threads with the label.
   var label = GmailApp.getUserLabelByName(labelName);
 
+  if (label == null || label == undefined) return -1;
+
+  //var threads = label.getThreads(0, 400).filter(function(thread) {
+    // Only include threads older than the limit we set in delayDays
+    //return (thread.getLastMessageDate() < maxDate);
+//  });
+
+
   if (label) {
     Logger.log('Found label: %s', label.getName());
-    var batchSize = 100;
-    var start = 0;
-    while (true) {
-      Logger.log('Batch %s %s', start, batchSize);
-      var threads = label.getThreads(start, batchSize);
-      if (threads.length < 1) {
-        Logger.log('No more threads');
-        break;
-      }
-        var toUpdate = threads.filter(function(thread) {
-          return (thread.getLastMessageDate() < thresholdDate);
-        })
 
-        //if an instance of "auto/delete" is found in the label name, delete it.
-        if (labelName.indexOf("auto/delete")>=0) {
-          Logger.log('Found %s threads to delete', toUpdate.length);
-          GmailApp.moveThreadsToTrash(toUpdate)
-        }
-        //otherwise, if instance of "auto/archive" is found archive it
-        else if (labelName.indexOf("auto/archive")>=0) {
-          Logger.log('Found %s threads to archive', toUpdate.length);
-           GmailApp.moveThreadsToArchive(toUpdate);
-        }
+  // Get all the threads labelled by convention
+  var label = GmailApp.getUserLabelByName(labelName);
 
-      // Prepare for next batch
-      start += batchSize - toUpdate.length;
+  var threads = label.getThreads(0, 100).filter(function(thread) {
+    // Only include threads older than the limit we set in delayDays
+    return (thread.getLastMessageDate() < thresholdDate);
+  });
+
+    if (threads.length == 0){
+      Logger.log('Found 0 threads to update');
+      return -1;
     }
-  }
-}
+
+  var batch_size = 100;
+  while (threads.length) {
+    //https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293
+    //set the batch size to the minimum of 100 or size of threads
+    var this_batch_size = Math.min(threads.length, batch_size);
+    var this_batch = threads.splice(0, this_batch_size);
+
+    if (update === 'delete') {
+      Logger.log('Found %s threads to delete', this_batch.length);
+      GmailApp.moveThreadsToTrash(this_batch)
+    }
+    else if (update === 'archive') {
+      Logger.log('Found %s threads to archive', this_batch.length);
+      GmailApp.moveThreadsToArchive(this_batch);
+    }
+
+  }//end while
+  }//end if label
+}// end function

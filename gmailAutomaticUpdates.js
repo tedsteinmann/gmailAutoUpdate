@@ -2,6 +2,10 @@ function automaticGmailUpdates() {
   _automaticGmailUpdates('auto/delete/daily', 1);
   _automaticGmailUpdates('auto/delete/weekly', 7);
   _automaticGmailUpdates('auto/delete/monthly', 30);
+
+  _automaticGmailUpdates('auto/archive/daily', 1);
+  _automaticGmailUpdates('auto/archive/weekly', 7);
+  _automaticGmailUpdates('auto/archive/monthly', 30);
 }
 
 // Delete Threads with given label, older than given number of days
@@ -20,7 +24,7 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
 
   // Get all the threads with the label.
   var label = GmailApp.getUserLabelByName(labelName);
-  Logger.log('Found label %s', label);
+
   if (label) {
     Logger.log('Found label: %s', label.getName());
     var batchSize = 100;
@@ -36,9 +40,15 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
           return (thread.getLastMessageDate() < thresholdDate);
         })
 
+        //if an instance of "auto/delete" is found in the label name, delete it.
         if (labelName.indexOf("auto/delete")>=0) {
           Logger.log('Found %s threads to delete', toUpdate.length);
           GmailApp.moveThreadsToTrash(toUpdate)
+        }
+        //otherwise, if instance of "auto/archive" is found archive it
+        else if (labelName.indexOf("auto/archive")>=0) {
+          Logger.log('Found %s threads to archive', toUpdate.length);
+           GmailApp.moveThreadsToArchive(toUpdate);
         }
 
       // Prepare for next batch

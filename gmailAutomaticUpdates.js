@@ -35,9 +35,8 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
         var toUpdate = threads.filter(function(thread) {
           return (thread.getLastMessageDate() < thresholdDate);
         })
-      
-        if label.includes("auto/delete")
-        {
+
+        if (labelName.indexOf("auto/delete")>=0) {
           Logger.log('Found %s threads to delete', toUpdate.length);
           GmailApp.moveThreadsToTrash(toUpdate)
         }

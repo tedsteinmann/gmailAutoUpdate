@@ -32,13 +32,18 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
         Logger.log('No more threads');
         break;
       }
-      var toDelete = threads.filter(function(thread) {
-        return (thread.getLastMessageDate() < thresholdDate);
-      })
-      Logger.log('Found %s threads to delete', toDelete.length);
-      GmailApp.moveThreadsToTrash(toDelete)
+        var toUpdate = threads.filter(function(thread) {
+          return (thread.getLastMessageDate() < thresholdDate);
+        })
+      
+        if label.includes("auto/delete")
+        {
+          Logger.log('Found %s threads to delete', toUpdate.length);
+          GmailApp.moveThreadsToTrash(toUpdate)
+        }
+
       // Prepare for next batch
-      start += batchSize - toDelete.length;
+      start += batchSize - toUpdate.length;
     }
   }
 }

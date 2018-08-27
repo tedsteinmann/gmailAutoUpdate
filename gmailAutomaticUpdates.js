@@ -14,6 +14,7 @@ function automaticGmailUpdates() {
 // https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
 // https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc
 // https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
+//https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293
 function _automaticGmailUpdates(labelName, minimumAgeInDays) {
 
   // if an instance of "auto/delete" is found in the label name, set flag to delete it.
@@ -35,14 +36,6 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
   // Get all the threads with the label.
   var label = GmailApp.getUserLabelByName(labelName);
 
-  if (label == null || label == undefined) return -1;
-
-  //var threads = label.getThreads(0, 400).filter(function(thread) {
-    // Only include threads older than the limit we set in delayDays
-    //return (thread.getLastMessageDate() < maxDate);
-//  });
-
-
   if (label) {
     Logger.log('Found label: %s', label.getName());
 
@@ -61,7 +54,6 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
 
   var batch_size = 100;
   while (threads.length) {
-    //https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293
     //set the batch size to the minimum of 100 or size of threads
     var this_batch_size = Math.min(threads.length, batch_size);
     var this_batch = threads.splice(0, this_batch_size);
@@ -73,6 +65,8 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
     else if (update === 'archive') {
       Logger.log('Found %s threads to archive', this_batch.length);
       GmailApp.moveThreadsToArchive(this_batch);
+      //when archiving, we need to remove this label so that it doesn't get run again.
+      label.removeFromThreads(this_batch);
     }
 
   }//end while

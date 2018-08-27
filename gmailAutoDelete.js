@@ -1,13 +1,7 @@
-function gmailAutoDeleteAfter1Week() {
-  _gmailAutoDelete('todelete/after1week', 7);
-}
-
-function gmailAutoDeleteAfter1Month() {
-  _gmailAutoDelete('todelete/after1month', 30);
-}
-
-function gmailAutoDeleteAfter3Months() {
-  _gmailAutoDelete('todelete/after3months', 90);
+function gmailAutoDelete() {
+  _gmailAutoDelete('auto/delete/daily', 1);
+  //_gmailAutoDelete('auto/delete/weekly', 7);
+  //_gmailAutoDelete('auto/delete/monthly', 30);
 }
 
 // Delete Threads with given label, older than given number of days
@@ -18,7 +12,7 @@ function gmailAutoDeleteAfter3Months() {
 // https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
 function _gmailAutoDelete(labelName, minimumAgeInDays) {
   Logger.log('Running autodelete for label %s (minimum age in days: %s)', labelName, minimumAgeInDays);
-  
+
   // Threshold for latest message of the thread.
   var thresholdDate = new Date();
   thresholdDate.setDate(thresholdDate.getDate() - minimumAgeInDays);
@@ -44,8 +38,7 @@ function _gmailAutoDelete(labelName, minimumAgeInDays) {
       Logger.log('Found %s threads to delete', toDelete.length);
       GmailApp.moveThreadsToTrash(toDelete)
       // Prepare for next batch
-      start += batchSize - toDelete.length; 
+      start += batchSize - toDelete.length;
     }
   }
 }
-

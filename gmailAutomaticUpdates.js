@@ -39,10 +39,7 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
   if (label) {
     Logger.log('Found label: %s', label.getName());
 
-  // Get all the threads labelled by convention
-  var label = GmailApp.getUserLabelByName(labelName);
-
-  var threads = label.getThreads(0, 100).filter(function(thread) {
+  var threads = label.getThreads(0, 400).filter(function(thread) {
     // Only include threads older than the limit we set in delayDays
     return (thread.getLastMessageDate() < thresholdDate);
   });
@@ -68,7 +65,6 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
       //when archiving, we need to remove this label so that it doesn't get run again.
       label.removeFromThreads(this_batch);
     }
-
   }//end while
   }//end if label
 }// end function

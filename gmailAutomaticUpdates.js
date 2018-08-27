@@ -1,7 +1,7 @@
-function gmailAutoDelete() {
-  _gmailAutoDelete('auto/delete/daily', 1);
-  //_gmailAutoDelete('auto/delete/weekly', 7);
-  //_gmailAutoDelete('auto/delete/monthly', 30);
+function automaticGmailUpdates() {
+  _automaticGmailUpdates('auto/delete/daily', 1);
+  _automaticGmailUpdates('auto/delete/weekly', 7);
+  _automaticGmailUpdates('auto/delete/monthly', 30);
 }
 
 // Delete Threads with given label, older than given number of days
@@ -10,8 +10,8 @@ function gmailAutoDelete() {
 // https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
 // https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc
 // https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
-function _gmailAutoDelete(labelName, minimumAgeInDays) {
-  Logger.log('Running autodelete for label %s (minimum age in days: %s)', labelName, minimumAgeInDays);
+function _automaticGmailUpdates(labelName, minimumAgeInDays) {
+  Logger.log('Running automatic updates for label %s (minimum age in days: %s)', labelName, minimumAgeInDays);
 
   // Threshold for latest message of the thread.
   var thresholdDate = new Date();

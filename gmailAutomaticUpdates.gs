@@ -2,7 +2,11 @@
 //
 //BASED ON
 /*
+Original author fwed (contact@fwed.fr)
 https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
+Forked from:
+https://gist.github.com/soxofaan/92fab6776c1bfcac060544ba0c9dd59c
+Modifications from:
 https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc
 https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
 https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293

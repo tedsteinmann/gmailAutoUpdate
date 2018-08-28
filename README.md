@@ -1,7 +1,8 @@
 # Gmail Automatic Updates
 A Google Apps Script to automatically archive or delete mail with a certain label after a certain time.
 
-Original author fwed (contact@fwed.fr)
+### Original author 
+fwed (contact@fwed.fr)
 https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
 
 ### Modifications from:

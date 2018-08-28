@@ -1,3 +1,37 @@
+// Google Apps Script to automatically archive or delete mail with a certain label after a certain time
+//
+//BASED ON
+/*
+https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
+https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc
+https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
+https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293
+*/
+// GETTING STARTED
+/*
+Relies on GMail label convention and Google script triggers to auto archive or delete messages by interval.
+For example, any email tagged with 'auto/delete/daily' will be deleted when it becomes a day old.
+This is useful for daily notifications and updates.
+Can be combined with filters for automatic tagging and email management.
+
+When to use delete or archive:
+- Use "delete" for re-producable message content (e.g. click here to see your online statement)
+- Use "archive" for content that is only relevant for a period of time (e.g. here is your weekly news summary)
+*/
+
+//INSTALLING
+/*
+How to install
+1. Flag desired mails with one of the labels in aotumaticGmailUpdates below (e.g. 'auto/delete/daily')
+- OPTIONAL: set up flags to auto label emails
+2. Create a Google Apps Script with this script
+3. Set up a time driven trigger to call automaticGmailUpdates daily
+
+## Disclaimer
+Make sure you know what your are doing and use at your own risk.
+I am not responsible for erroneous deletion of your emails.
+*/
+
 function automaticGmailUpdates() {
   _automaticGmailUpdates('auto/delete/daily', 1);
   _automaticGmailUpdates('auto/delete/weekly', 7);
@@ -8,13 +42,6 @@ function automaticGmailUpdates() {
   _automaticGmailUpdates('auto/archive/monthly', 30);
 }
 
-// Delete Threads with given label, older than given number of days
-//
-// Based on:
-// https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
-// https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc
-// https://gist.github.com/GabeBenjamin/3ef20889fa37ae97e9492e58e90db892
-//https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293
 function _automaticGmailUpdates(labelName, minimumAgeInDays) {
 
   // if an instance of "auto/delete" is found in the label name, set flag to delete it.

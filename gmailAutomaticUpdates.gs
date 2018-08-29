@@ -1,4 +1,7 @@
 /*
+Athor: @tedsteinmann
+Copyright: https://gist.github.com/tedsteinmann/0ee248856de6e75498470db7c98fab09
+
 Original author
 fwed (contact@fwed.fr)
 https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c

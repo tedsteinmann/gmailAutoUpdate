@@ -14,8 +14,15 @@ When to use delete or archive:
 
 Installing
 ----------
-1. Flag desired mails with one of the labels in automaticGmailUpdates (e.g. 'auto/delete/daily')
-- OPTIONAL: set up filters to auto label emails
+1. Flag desired mails with one of the customizable labels in automaticGmailUpdates. This can be done with filters if desired. By default the labels supported are:
+- auto/delete/daily
+- auto/delete/weekly
+- auto/delete/monthly
+  AND
+- auto/archive/daily
+- auto/archive/weekly
+- auto/archive/monthly
+
 2. Create a Google Apps Script with this gmailAutomaticUpdates.gs
 3. Set up a time driven trigger to call automaticGmailUpdates daily
 

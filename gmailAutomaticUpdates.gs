@@ -11,38 +11,45 @@ https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1
 */
 
 function automaticGmailUpdates() {
-  _automaticGmailUpdates('auto/delete/daily', 1);
-  _automaticGmailUpdates('auto/delete/weekly', 7);
-  _automaticGmailUpdates('auto/delete/monthly', 30);
 
-  _automaticGmailUpdates('auto/archive/daily', 1);
-  _automaticGmailUpdates('auto/archive/weekly', 7);
-  _automaticGmailUpdates('auto/archive/monthly', 30);
+//setting primary inputs
+var prefix = 'auto'; //top level label could be re-named (it is case sensitive);
+var actions = ['delete','archive']; //conditional -- DO NOT CHANGE
+var interval = [ // could change intervals and days (un-tested)
+  { name: 'daily', days: 1,},
+  { name: 'weekly',days: 7,},
+  { name: 'monthly',days: 30,},
+];
+
+//e.g. Gmail label structure: auto/delete/daily OR auto/archive/weekly
+
+actions.forEach(setInterval);
+
+  function setInterval(value) {
+
+    var action = value; //for clarity
+
+  	for (i=0; i < interval.length ; i++) { //looping over intervals
+      var label = prefix +'/'+ value +'/'+ interval[i].name;
+        _automaticGmailUpdates(label, interval[i].days, action);
+  	}
+  }
 }
 
-function _automaticGmailUpdates(labelName, minimumAgeInDays) {
+function _automaticGmailUpdates(label, days, action) {
 
-  // if an instance of "auto/delete" is found in the label name, set flag to delete it.
-  if (labelName.indexOf("auto/delete")>=0) {
-    var update = 'delete';
-  }
-  //otherwise, if instance of "auto/archive" is found, set flag to archive it
-  else if (labelName.indexOf("auto/archive")>=0) {
-    var update = 'archive'
-  }
-
-  Logger.log('Running automatic updates for label %s (minimum age in days: %s)', labelName, minimumAgeInDays);
+  Logger.log('Running automatic ' + action +' for messages labeled %s', label);
 
   // Threshold for latest message of the thread.
   var thresholdDate = new Date();
-  thresholdDate.setDate(thresholdDate.getDate() - minimumAgeInDays);
+  thresholdDate.setDate(thresholdDate.getDate() - days);
   Logger.log('Using threshold date %s', thresholdDate);
 
   // Get all the threads with the label.
-  var label = GmailApp.getUserLabelByName(labelName);
+  var label = GmailApp.getUserLabelByName(label);
 
   if (label) {
-    Logger.log('Found label: %s', label.getName());
+    //Logger.log('Found label: %s', label.getName());
 
   var threads = label.getThreads(0, 400).filter(function(thread) {
     // Only include threads older than the limit we set in delayDays
@@ -60,15 +67,14 @@ function _automaticGmailUpdates(labelName, minimumAgeInDays) {
     var this_batch_size = Math.min(threads.length, batch_size);
     var this_batch = threads.splice(0, this_batch_size);
 
-    if (update === 'delete') {
-      Logger.log('Found %s threads to delete', this_batch.length);
+    Logger.log('Found %s threads to ' + action, this_batch.length);
+
+    if (action === 'delete') {
       GmailApp.moveThreadsToTrash(this_batch)
     }
-    else if (update === 'archive') {
-      Logger.log('Found %s threads to archive', this_batch.length);
+    else if (action === 'archive') {
       GmailApp.moveThreadsToArchive(this_batch);
-      //when archiving, we need to remove this label so that it doesn't get run again.
-      label.removeFromThreads(this_batch);
+      label.removeFromThreads(this_batch);//when archiving, we need to remove this label so that it doesn't get run again.
     }
   }//end while
   }//end if label

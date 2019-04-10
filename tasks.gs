@@ -59,14 +59,14 @@ function listTasks_(taskListId) {
  * Adds a task to a tasklist with due date set to tomorrow.
  * @param {string} taskListId The tasklist to add to.
  */
-function addTask_(title,taskListId) {
+function addTask_(title,taskNote, taskListId) {
 
   var tomorrow = new Date();
   var dueDate = Utilities.formatDate(tomorrow, "GMT", "yyyy-MM-dd'T'HH:mm:ss'Z'")
 
   var task = {
     title: title,
-    // notes: 'Remember to get this done!',
+    notes: taskNote,
     due: dueDate
   };
   task = Tasks.Tasks.insert(task, taskListId);
@@ -89,9 +89,10 @@ function processPending_() {
 
     // Grab the task data
     var taskTitle = thread.getFirstMessageSubject();
+    var taskNote = 'Email: ' + thread.getPermalink();
 
     // Insert the task
-    addTask_(taskTitle, getTasklistId_(TASKLIST));
+    addTask_(taskTitle, taskNote, getTasklistId_(TASKLIST));
 
     // Set to 'done' by exchanging labels
     thread.removeLabel(label_pending);

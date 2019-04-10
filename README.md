@@ -34,7 +34,7 @@ Installing
 * email.gs
 * tasks.gs
 
-3. [Authorize tasks API and appscript]:  (https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services "Enabling Advanced Services")
+3. Authorize tasks API and appscript:  https://developers.google.com/apps-script/guides/services/advanced#enabling_advanced_services
 4. Set up a time driven trigger to call processAll() in automation.gs daily
 
 Disclaimer

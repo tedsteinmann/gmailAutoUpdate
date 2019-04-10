@@ -1,15 +1,15 @@
 # Gmail Automatic Updates
-A Google Apps Script to automatically archive or delete mail with a certain label after a certain time.
+A Google Apps Script to automatically create tasks, archive or delete mail based on a certain GMail label convention.
 
 Getting Started
 ---------------
-Relies on GMail label convention and Google script triggers to automatically create tasks, archive or delete messages on an interval.
+To get started, tag emails according to the suppoted tagging structure in email.gs and tasks.gs as described below. Alternatively, you can customize the tags in these files.
 
 ## Tasks
-For example, any email labeled "@Task" will create a task due tomorrow. Emails that have had tasks created will then be re-labeled "Tasked".
+Any email labeled "@Task" will create a task due tomorrow. Emails that have had tasks created will then be re-labeled "Tasked".
 
-## Email Management
-Any email tagged with 'auto/delete/daily' will be deleted when it becomes a day old.
+## Email
+Email management relies on a nested set of labels. For example, any email tagged with 'auto/delete/daily' will be automatically deleted when it becomes a day old.
 This is useful for daily notifications and updates.
 Can be combined with filters for automatic tagging and email management.
 

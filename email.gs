@@ -1,7 +1,4 @@
 /*
-Athor: @tedsteinmann
-Copyright: https://gist.github.com/tedsteinmann/0ee248856de6e75498470db7c98fab09
-
 Original author
 fwed (contact@fwed.fr)
 https://medium.com/@fw3d/auto-archive-emails-in-gmail-after-2-days-1ebf0e076b1c
@@ -13,7 +10,7 @@ https://gist.github.com/soxofaan/92fab6776c1bfcac060544ba0c9dd59c
 https://gist.github.com/anonymous/2cca33d376f7f924fdaa67891ad098cc#gistcomment-1984293
 */
 
-function automaticGmailUpdates() {
+function processEmails() {
 
 //setting primary inputs
 var prefix = 'auto'; //top level label could be re-named (it is case sensitive);
